@@ -1,5 +1,6 @@
 library(shiny)
 library(ggplot2)
+library(png)
 
 function(input, output) {
   
@@ -8,17 +9,17 @@ function(input, output) {
     ## Compose data frame
     data.frame(
       Name = c(
-        "Crystal Width Mean"
-      , "Crystal Width SD"
+        "Platelet Thickness Mean"
+      , "Platelet Thickness SD"
       , "Gap Width Mean"
       , "Gap Width SD"
       , "Pigment"
         ),
       Value = as.character(c(
-        input$'crystal_width_mean'
-      , input$'crystal_width_sd'
-      , input$'gap_width_mean'
-      , input$'gap_width_sd'
+        input$'platelet_thickness_mean'
+      , input$'platelet_thickness_sd'
+      , input$'cytoplasm_gap_thickness_mean'
+      , input$'cytoplasm_gap_thickness_sd'
       , input$'Pigment'
         )), 
       stringsAsFactors = FALSE)
@@ -41,7 +42,7 @@ theme_update(
   , strip.text.x = element_text(size = 16, colour = "black", face = "bold"))
 
   ## Load necessary data (prerun spectra and colors)
-figs1dat    <- readRDS("supp_out.rds")
+supp_fig    <- readRDS("supp_out.rds")
 spec_colors <- read.csv("spec_colors.csv")
 rgb_pigment <- suppressWarnings(read.csv("rgb_pigment.csv"))
 pigment_reflectance <- suppressWarnings(read.csv("pigment_reflectance.csv"))
@@ -82,12 +83,12 @@ adjust_spec <- function (spectra, pigment_spectra, pigment_opt) {
 spec_dat <- reactive({
   
   ## spec without adjusting with pigment data
-unweighted_spec <-  with(figs1dat
-    , subset(figs1dat
-      , crystal_width_mean == input$'crystal_width_mean' &
-        crystal_width_sd   == input$'crystal_width_sd' & 
-        gap_width_mean     == input$'gap_width_mean' &
-        gap_width_sd       == input$'gap_width_sd'))
+unweighted_spec <-  with(supp_fig
+    , subset(supp_fig
+      , platelet_thickness_mean      == input$'platelet_thickness_mean'      &
+        platelet_thickness_sd        == input$'platelet_thickness_sd'        & 
+        cytoplasm_gap_thickness_mean == input$'cytoplasm_gap_thickness_mean' &
+        cytoplasm_gap_thickness_sd   == input$'cytoplasm_gap_thickness_sd'))
   
   ## spec after adjusting with pigment data
   adjust_spec(
@@ -100,12 +101,12 @@ unweighted_spec <-  with(figs1dat
   ## Determine color based on spectra chosen by the user
 color_dat <- reactive({
   
-  which_spec <- with(figs1dat
-    , subset(figs1dat
-      , crystal_width_mean == input$'crystal_width_mean' &
-        crystal_width_sd   == input$'crystal_width_sd' & 
-        gap_width_mean     == input$'gap_width_mean' &
-        gap_width_sd       == input$'gap_width_sd'))
+  which_spec <- with(supp_fig
+    , subset(supp_fig
+      , platelet_thickness_mean      == input$'platelet_thickness_mean' &
+        platelet_thickness_sd        == input$'platelet_thickness_sd' & 
+        cytoplasm_gap_thickness_mean == input$'cytoplasm_gap_thickness_mean' &
+        cytoplasm_gap_thickness_sd == input$'cytoplasm_gap_thickness_sd'))
   
   ## Retrieve pigment data
   which_color <- rgb_pigment[rgb_pigment$unique_spec == which_spec$unique_spec[1], ]
