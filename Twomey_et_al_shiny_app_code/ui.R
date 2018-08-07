@@ -50,6 +50,6 @@ fluidPage(
        
      # Main ggplot only
     , mainPanel(plotOutput(outputId = "spec_plot")
-    , img(src = 'S9.png', align = "right"))
+    , img(src = 'param_figure.png', align = "right", width = "750"))
   )
 )
