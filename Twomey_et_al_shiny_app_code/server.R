@@ -42,10 +42,11 @@ theme_update(
   , strip.text.x = element_text(size = 16, colour = "black", face = "bold"))
 
   ## Load necessary data (prerun spectra and colors)
-supp_fig    <- readRDS("supp_out.rds")
-spec_colors <- read.csv("spec_colors.csv")
+figs1dat    <- readRDS("supp_out.rds")
 rgb_pigment <- suppressWarnings(read.csv("rgb_pigment.csv"))
+rgb_pigment_user    <- suppressWarnings(read.csv("rgb_pigment_user_def.csv"))
 pigment_reflectance <- suppressWarnings(read.csv("pigment_reflectance.csv"))
+pigment_reflectance_user <- suppressWarnings(read.csv("pigment_reflectance_user_def.csv"))
 
   ## needed spectra adjustment for including pigments
 adjust_spec <- function (spectra, pigment_spectra, pigment_opt) {
@@ -93,7 +94,7 @@ unweighted_spec <-  with(supp_fig
   ## spec after adjusting with pigment data
   adjust_spec(
   spectra         = unweighted_spec
-, pigment_spectra = pigment_reflectance
+, pigment_spectra = if(input$'User_pig' == "No") {pigment_reflectance} else {pigment_reflectance_user}
 , pigment_opt     = input$'Pigment')
   
 })
@@ -109,27 +110,40 @@ color_dat <- reactive({
         cytoplasm_gap_thickness_sd == input$'cytoplasm_gap_thickness_sd'))
   
   ## Retrieve pigment data
+  if (input$'User_pig' == "No") {
   which_color <- rgb_pigment[rgb_pigment$unique_spec == which_spec$unique_spec[1], ]
+  } else {
+  which_color <- rgb_pigment_user[rgb_pigment_user$unique_spec == which_spec$unique_spec[1], ]
+  }
   if (nrow(which_color) > 0) {
   which_color <- subset(which_color, Pigment == input$'Pigment') 
-  } else {
-  which_color <- spec_colors[spec_colors$unique_spec == which_spec$unique_spec[1], ]
-  }
-  
   with(which_color, rgb(R, G, B, maxColorValue = 255))
+  } else {
+  rgb(255, 255, 255, maxColorValue = 255)
+  }
   
 })
 
   ## render the ggplot based on the spectra chosen by the user, with a background color given by the calculation
   output$spec_plot <- renderPlot({
 
-ggplot(spec_dat(), aes(wavelength, spectra)) + geom_line(lwd = 4, colour = "black") + 
+backcol <- color_dat()
+    
+gg1 <- ggplot(spec_dat(), aes(wavelength, spectra)) + geom_line(lwd = 4, colour = "black") + 
       xlab("Wavelength") + ylab("Reflectance") +
       scale_y_continuous(limits = c(0, 65)) +
-       theme(panel.background = element_rect(fill = color_dat()
+       theme(panel.background = element_rect(fill = backcol
          , colour = "lightblue"
          , size = 0.5
          , linetype = "solid"))
+
+  ## If no user defined pigments are given, print that this option was ignored on the plot
+  if (backcol == "#FFFFFF") {
+  gg1 + geom_text(aes(label = "No user defined pigments given, 
+no pigment was used to generate this plot"), x = 750, y = 60, size = 8)
+  } else {
+  gg1
+  }
     
     })
   

@@ -46,6 +46,16 @@ fluidPage(
       
     , helpText("Skin pigments that are also present")
       
+    , radioButtons("User_pig", "User Defined Pigments?:"
+      , c(
+          "No"    = "No"
+        , "Yes"   = "Yes"
+      )
+     ,  selected = "No"
+     )
+     , helpText("Default pigments used if `No' is selected.
+       User defined pigments used if 'Yes' is selected.")
+      
     )
        
      # Main ggplot only
