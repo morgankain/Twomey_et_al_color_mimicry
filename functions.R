@@ -208,7 +208,6 @@ if (exists("pb")) {
   }
 }
 
-## Begin second, more fine grained pass.
 ## Slightly convoluted but effective enough way of returning the optimal values of 
   ## both xx (mean) and zz (sd) that minimized the sum of squares
 xx_opt <- which(colSums(sum_square_out == min(sum_square_out)) == 1)
@@ -373,7 +372,7 @@ sum_square_out <- matrix(nrow = length(mean_opts), ncol = length(sd_opts))
 
 }
 
-## Slightly stupid but effective enough way of returning the optimal values of 
+## Slightly convoluted but effective enough way of returning the optimal values of 
   ## both xx (mean) and zz (sd) that minimized the sum of squares
 sum_square_temp <- numeric(length(sum_square_out_crys))
 
@@ -469,9 +468,8 @@ stack_fitting_func <- function (
 rand_sites <- matrix(nrow = nstacks, ncol = 3)
 colnames(rand_sites) <- c("cw", "gw", "nc")
 
-## Cheaty and unprincipled way of obtaining a truncated Poisson distribution. 
-## Allow all #s except for 0s and 1s for # of crystals to avoid breakage. 
-## Somewhat, but very rare event
+## Slightly hacky way of obtaining a truncated Poisson distribution to allow all #s except for 0s and 1s 
+## for # of crystals to avoid breakage (in general a very rare event)
 for (p in 1:nstacks) {
 temp_num <- rpois(1, crystal_number_mean)
   while (temp_num < 2) {

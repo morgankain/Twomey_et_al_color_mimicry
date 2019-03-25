@@ -61,8 +61,8 @@ spec_gen                  <- TRUE
   if (spec_gen == TRUE) {
 genspec_nstacks           <- 5000
 genspec_ncrys             <- 10
-genspec_crys_dat <- c(4.25, 0.4)
-genspec_gap_dat <- c(4.75, 0.4)
+genspec_crys_dat          <- c(4.25, 0.4)
+genspec_gap_dat           <- c(4.75, 0.4)
 fit_simulated_spectra     <- FALSE
   }
 
@@ -76,9 +76,9 @@ expected_gap_mean_range   <- c(4.2, 5.4)
 expected_gap_sd_range     <- c(0.10, 0.70)
 
 fit_type                  <- "GAP"
-#fit_type                  <- "GAP_NUM"
+#fit_type                 <- "GAP_NUM"
 ss_type                   <- "RAW"
-#ss_type                   <- "SCALED"
+#ss_type                  <- "SCALED"
 ss_match                  <- TRUE
 full_wl_range             <- FALSE
 

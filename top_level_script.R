@@ -23,16 +23,17 @@
 ## to lack iridophores even in brightly colored areas. (2) What are the refractive indices and approximate 
 ## sizes of the materials of the multilayer? And (3) what pigments are present in the skin and what are 
 ## their absorbance ranges? For example if drosopterin is present in the skin, this means the fitting range 
-## should wavelengths longer than where these pigments absorb light (e.g., > 600 nm in the case of drosopterin).
+## should be wavelengths longer than where these pigments absorb light (e.g., > 600 nm in the case of drosopterin).
 
 ## Second, we point out that these scripts are set up for a relatively narrow range of problems.
 ## Data on crystal widths is needed. For the current project these data were obtained from TEM images.
 ## It is possible to allow both crystal widths and gap widths to be fit as free parameters but several
-## combinations of these parameters can produce similar spectra, the parameter estimates will likely not
-## correspond well to reality.
+## combinations of these parameters can produce similar spectra. A more sophisticated fitting proceedure will be
+## needed for a problem in which all parameters are allowde to vary; currently, parameter estimates will likely not
+## correspond well to reality. 
 
 ## Third, we acknowledge that the current brute force search algorithm is not a very rigorous method for reducing
-## SS. While it will find the minimal SS without bias, it will do so in an inefficient way.  
+## RSS. While it will find the minimal SS without bias, it will do so in an inefficient way.  
 
 #######
 ### Required Set up
@@ -92,14 +93,12 @@ source("package_parameters.R")
 
 ### simulate a spectra from the chosen parameter values | spec_gen == "TRUE"
 if (param_list$spec_gen == TRUE) {
-    system.time({
-source("spec_generate.R")
-    })
+  system.time({ source("spec_generate.R") })
 }
 
 ### Fit. Contains a series of logicals to determine which fitting procedure is needed
 ## track time needed for fit
-system.time({source("fitting.R")})
+system.time({ source("fitting.R")} )
 
 ### plot the results
 #source("fitted_spec_ggplot.R")
