@@ -7,7 +7,13 @@
 #######
 
 ## The main objective of these scripts is to fit reflectance spectra to an observed spectrum using
-## Maia et al's (2009) multilayer model. This model has been modified to incorporate variance parameters
+## Maia et al's (2009) multilayer model:
+
+## Maia, R., Caetano, J. V. O., Bao, S. N., & Macedo, R. H. (2009). 
+## Iridescent structural colour production in male blue-black grassquit feather barbules: the role of keratin and melanin. 
+## Journal of the Royal Society Interface, 6(suppl_2), S203-S211.
+
+## This model has been modified to incorporate variance parameters
 ## allowing for the production of broadband reflectance spectra, and can be fit over a custom wavelength
 ## range to allow fitting to occur only at wavelengths outside the influence of skin pigments.
 

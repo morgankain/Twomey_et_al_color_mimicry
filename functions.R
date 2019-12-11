@@ -4,6 +4,9 @@
 
 ## Internal 'guts' of the whole procedure. The transfer matrix script 
 ## (written by Rafael Maia: http://rafaelmaia.net/)
+## Maia, R., Caetano, J. V. O., Bao, S. N., & Macedo, R. H. (2009). 
+## Iridescent structural colour production in male blue-black grassquit feather barbules: the role of keratin and melanin. 
+## Journal of the Royal Society Interface, 6 (suppl_2), S203-S211.
 multilayer_adj <- function(ag0, n0, n1, n2, d1, d2, stacks) {          ## Number of stacks in this region of the frog?
 
 ms<-NULL
